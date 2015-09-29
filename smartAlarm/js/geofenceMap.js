@@ -20,9 +20,51 @@ var isEnteredAddress = false;
 var globalCurrentLat;
 var globalCurrentLng;
 var globalDistance = 1;
+
+function getCurrentLocation()
+{
+	  if (navigator.geolocation)
+	    {
+		  navigator.geolocation.getCurrentPosition(showPosition,showError);
+	    }
+	  else{
+		  alert("Geolocation is not supported by this browser.");
+	  }
+
+function showPosition(position)
+{
+	globalMarkerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	  return globalMarkerLocation;
+	//alert("initial loc:: "+initialLocation);
+	  }
+	function showError(error)
+	  {
+alert("errro");
+	  switch(error.code)
+	    {
+	    case error.PERMISSION_DENIED:
+	    alert("User denied the request for Geolocation.");
+	    break;
+	    case error.POSITION_UNAVAILABLE:
+	    alert("Location information is unavailable.");
+	    break;
+	    case error.TIMEOUT:
+	    alert("The request to get user location timed out.");
+	    break;
+	    case error.UNKNOWN_ERROR:
+	    alert("An unknown error occurred.");
+	    break;
+	    }
+	  globalMarkerLocation = new google.maps.LatLng(homeLat, homeLng);
+	  return globalMarkerLocation;
+	//alert("initial loc defined:: "+initialLocation);
+	  }	
+}
+
 function loadMap(radVal)
 {
-	trackCurrentLocation();
+//	trackCurrentLocation();
+	
 var test = $( window ).height();
 test = test -110;
 $("#map-canvas").css("height",test);
@@ -49,7 +91,7 @@ $("#map-canvas").css("height",test);
 		  geofenceMap.setZoom(geofenceMap.getZoom());
 	    });
 	}
-	var Location = new google.maps.LatLng(globalCurrentLat, globalCurrentLng);
+	var Location = getCurrentLocation();
 	var CurrenLocMarker = new google.maps.Marker({
 	  	position: Location,
         draggable: false,
@@ -57,7 +99,9 @@ $("#map-canvas").css("height",test);
         icon:'images/curloc4.png'
      });
 	CurrenLocMarker.setMap(geofenceMap);
+	geofenceMap.setCenter(Location);
 	console.log('current loca marker :'+Location);
+	alert("loc "+Location);
 	if(isEnteredAddress)
 	{
 		refreshMap(globalMarkerLocation,radVal);
