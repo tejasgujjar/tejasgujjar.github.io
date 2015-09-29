@@ -7,6 +7,7 @@ $(document).ready(function()
 				// myService = cordova.plugins.myService;
 				// getStatus();
   			// }, true);
+	loadMap(1);
 });
 var isDeviceReady = false;
 var myMedia;
