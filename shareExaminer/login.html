@@ -1,0 +1,53 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login Page</title>
+	<link rel="stylesheet" href="css/themes/newtheme.min.css" />
+	<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="css/themes/jquery.mobile.structure-1.4.5.min.css" />
+	<link href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="css/styles.css" rel="stylesheet" type="text/css" media="screen"/>
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile-1.4.4.js"></script>
+	<script type="text/javascript" src="js/jquery.blockUI_2.66.js"></script>
+	
+	<script type="text/javascript" src="js/popup_functions.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+</head>
+<body>
+
+<div id="loginPage"  data-role="page" data-theme="a">
+		<div data-role="header" data-position="inline">
+			<button onclick="window.location='index.html'" data-role="button" data-icon="home" data-iconpos="notext" data-theme="a" data-inline="true" class="ui-link ui-btn ui-btn-a ui-icon-home ui-btn-icon-notext ui-btn-inline ui-shadow ui-corner-all" role="button">My button</button>
+			<h1>LOGIN</h1>
+		</div>
+		<div data-role="content">
+			<div>
+				<input style="padding: 10px" type="email" placeholder="Enter your email">
+				<input style="padding: 10px" type="password" placeholder="Enter password">
+				<div style="width:45%; display: inline-block;float: left;"><button id="skip" class="ui-btn ui-corner-all ui-shadow  ui-icon-delete ui-btn-icon-left ui-btn-a">Skip</button></div>	
+				<div style="width:45%; display: inline-block;float: right;"><button id="submit" class="ui-btn ui-corner-all ui-shadow  ui-icon-check ui-btn-icon-left ui-btn-a">Submit</button></div>
+			</div>
+		</div>
+			<!-- Common error popup dialog -->
+				<a href="#commonPopup_popup" data-rel="popup" id="common_popup_link" class="displaynone"></a>
+                <div id="commonPopup-screen"></div>
+                <div id="commonPopup-popup">
+                    <div data-role="popup" class="loginErr-page common-popup" id="commonPopup_popup" data-overlay-theme = "a" data-position-to="window">
+                        <div id="popup_main">
+                            <div id="popup_head" class="head-txt purple-txt"></div>
+                            <div class="medium-txt gray-txt">
+                                <div id="popup_text"></div>
+                                <div id="popup_buttons"></div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+		<div data-role="footer" data-position="inline">
+			<h1>Footer</h1>
+		</div>
+	</div>
+</body>
+</html>

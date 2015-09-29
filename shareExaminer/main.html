@@ -1,0 +1,95 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login Page</title>
+	<link rel="stylesheet" href="css/themes/newtheme.min.css" />
+	<link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="css/themes/jquery.mobile.structure-1.4.5.min.css" />
+	<link href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="css/styles.css" rel="stylesheet" type="text/css" media="screen"/>
+	
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile-1.4.4.js"></script>
+	<script type="text/javascript" src="js/jquery.blockUI_2.66.js"></script>
+	
+	<script type="text/javascript" src="js/popup_functions.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+	<div id="mainpage"  data-role="page" data-theme="a">
+		<div data-role="header" data-position="inline" style="height: 45px;">
+			<span style="display: inline-block;" id="addMemBtnHdr"><a href="#addMem_popupDialog"  data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-icon="home" data-iconpos="notext" data-theme="a" data-inline="true" class="fltLeft ui-link ui-btn ui-btn-a ui-icon-user ui-btn-icon-right ui-btn-inline ui-shadow ui-corner-all" role="button">Add</a></span>
+			<button id="backBtnHdr" onclick="showHomePage()" data-role="button" data-icon="home" data-iconpos="notext" data-theme="a" data-inline="true" class="ui-link ui-btn ui-btn-a ui-icon-carat-l ui-btn-icon-notext ui-btn-inline ui-shadow ui-corner-all" role="button"></button>
+			<button onclick="window.location='login.html'" data-role="button" data-icon="home" data-iconpos="notext" data-theme="a" data-inline="true" class="fltRight ui-link ui-btn ui-btn-a ui-icon-delete ui-btn-inline ui-btn-icon-right ui-shadow ui-corner-all" role="button">Logout</button>
+			<h1 style="display: inline-block; position: absolute;left: 30px;"><span id="headerMemName">Admin</span></h1>
+		</div>
+		<div data-role="content">
+			<div id="membersPage">
+				<div id="member_list"></div>
+			</div>
+			<div id="expensesPage">
+				<div id="expense_list"></div>
+			</div>
+		</div>
+		<div data-role="footer" data-position="inline">
+			<div><a href="#addExpense_popupDialog" id="addExpense_popupDialog_Btn" data-rel="popup" data-position-to="window" data-transition="pop" id="addExpense" class="ui-btn ui-corner-all ui-shadow  ui-icon-plus ui-btn-icon-left ui-btn-a" style="width:80%;">Add Expense</a></div>	 	 	
+		</div>
+		<div data-role="popup" id="addMem_popupDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:400px;">
+	   				<div data-role="header" data-theme="a">
+	    				<h1>Add Member </h1>
+	    			</div>
+	    			<div role="main" class="ui-content">
+				   		<input id="memMobNumber" type="number" placeholder="Enter 10 digit Phone number">
+				   		<input id="memName" type="text" placeholder="Enter nick name">
+				        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">Cancel</a>
+				        <button id="addMemSubmit" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow">Send Request</button>
+	    			</div>
+		</div>
+		<div data-role="popup" id="showDetailPopUp" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:1000px;width:150%">
+	   				<div data-role="header" data-theme="a">
+	    				<h1>Expense Detail </h1>
+	    			</div>
+	    			<div role="main" class="ui-content">
+				   		<label for="purpose_detail">Purpose :</label><input readonly="readonly" id="purpose_detail" type="text" placeholder="purpose">
+				   		<label for="amount_detail">Amount :</label> <input  readonly="readonly" id="amount_detail" type="number" placeholder="Amount">
+				   		<label for="location_detail">Location :</label> <input  readonly="readonly" id="location_detail" type="text" placeholder="Location">
+				   		<label for="date_detail">Date :</label> <input  readonly="readonly" id="date_detail" type="text" placeholder="Date">
+				        <label for="time_detail">Time :</label> <input  readonly="readonly" id="time_detail" type="text" placeholder="Time">
+				        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">OK</a>
+	    			</div>
+		</div>
+		<div data-role="popup" id="addExpense_popupDialog" data-overlay-theme="a" data-theme="a" data-dismissible="true" style="max-width:500px;">
+	   				<div data-role="header" data-theme="a">
+	    				<h1>Add Expense</h1>
+	    			</div>
+	    			<div role="main" class="ui-content">
+						<select id="memListDropdown"></select>	    				
+				   		<input id="amtInv" type="number" placeholder="Enter amount invested">
+				   		<input id="amtPurpose" type="text" placeholder="Enter purpose">
+				   		<input id="amtLoc" type="text" placeholder="Enter Location">
+				        <a id="addExp_cancel" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" >Cancel</a>
+				        <button id="addExp_submit"  class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a fltRight" data-rel="back" data-transition="flow">Submit</button>
+	    			</div>
+		</div>
+	</div>
+		<!-- Common error popup dialog -->
+				<a href="#commonPopup_popup" data-rel="popup" id="common_popup_link" class="displaynone"></a>
+                <div id="commonPopup-screen"></div>
+                <div id="commonPopup-popup">
+                    <div data-role="popup" class="loginErr-page common-popup" id="commonPopup_popup" data-overlay-theme = "a" data-position-to="window">
+                        <div id="popup_main">
+                            <div id="popup_head" class="head-txt purple-txt"></div>
+                            <div class="medium-txt gray-txt">
+                                <div id="popup_text"></div>
+                                <div id="popup_buttons"></div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+
+</body>
+</html>

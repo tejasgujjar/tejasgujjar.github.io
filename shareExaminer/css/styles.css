@@ -1,0 +1,141 @@
+.splash_bgColor{ 
+	background-image: -webkit-gradient(linear, left bottom, right top, from(black), to(grey), color-stop(100%, white ) ) !important;
+}
+.splash_txt{
+	font-family:sans-serif;
+	font-size: 45px;
+	color: white;
+	
+	width: 200px;
+    height: 150px;
+    background-color: red;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: -100px;;
+    right: 0;
+    margin: auto;
+}
+
+.ui-page { 
+background-image: -webkit-gradient(linear, left bottom, right top, from(black), to(grey), color-stop(100%, white ) ) !important;
+}
+.ui-body-a{
+	background-image: -webkit-gradient(linear, left bottom, right top, from(black), to(grey), color-stop(100%, white ) ) !important;
+}
+.ui-content {
+    background-color: lightblue !important; 
+     /* background-image:url("images/wood2.jpg");  */ /* wood2.jpg */
+     background-size: 100%;
+    color: black;
+    
+}
+
+.fltRight{
+	float: right;
+}
+.fltLeft{
+	float: left;
+}
+/*Added CSS for pop ups*/
+.head-txt{font-size: 20px;color:#000;font-weight: 900;text-shadow:none;}
+.purple-txt{color:#0B243B;border-bottom:1px solid #CDCED1;margin-bottom:2%}
+.medium-txt{font-size: medium;}
+.gray-txt{color: #474747;}
+.loginErr-page{
+	width:98% !important;
+	height:50% !important;
+	border-radius:20px;
+	background: -webkit-gradient(linear,  left top, left bottom, color-stop(0%, #f2f5f7), color-stop(50%, #d7dee3), color-stop(100%, #f6f8f9));
+	z-index:99999;
+	padding:3%;
+}
+.loginErr-page div{margin:3% 0;text-align:center;}
+
+#popup_main div{padding:1% 0;}
+#popup_main div:nth-child(2){text-align:center;}
+#popup_head{text-align:left;}
+#popup_text{text-align:justify;}
+#popup_buttons{width:100%;text-align:right;}
+#popup_buttons .black-button{padding:8px 0; width:45%;}
+#popup_buttons input[type="button"]:nth-child(2){margin-left:5px}
+.common-popup{height:50% !important;z-index:99999;}
+#popup_main{
+	width:100%;
+	height:50%;z-index:99999;
+}
+.black-button{
+	color: #fefefe;
+	text-shadow: #37393d;
+	padding:1% 2%;
+	border:1px solid #000;
+	border-radius:7px;
+	/* background: -webkit-gradient(linear, left top, left bottom, from(#424549), to(#000000), color-stop(90%, #000 )); */
+	background: -webkit-gradient(linear, left top, left bottom, from(#0B243B), to(#000000), color-stop(90%, #0F133C ));
+	cursor:pointer;
+	z-index:99999;
+}
+.black-button{padding:8px 0; width:45%;}
+
+.displaynone{display: none;}
+
+/*member list*/
+.list{
+	border-bottom:4px solid #343C52;
+	width:100%;
+	display: table;
+	vertical-align:middle;
+	cursor:pointer;
+	/* padding:4% 0; */
+	/*  background-color: #FF9999;  */
+ 	 background-image:url("images/bg2.jpg"); 
+	 background-size: 100%;
+	color:white;
+	/* color:rgb(126, 67, 21); */
+	text-align: center;
+	/* margin-left: -15%; */
+	border-radius: 10px;
+	margin-top: 3%;
+}
+
+#member_list ul,#expense_list ul{
+	padding: 0px;
+}
+
+.memName, .serialNo, .amt{
+	font-size: 22px;
+}
+.serialNo{
+	margin-left:1%;
+	margin-right: 3%;
+	float: left;
+}
+.amt{
+	float: right;
+	width:20%;
+	background-color: white;
+	margin-right: 7%;
+	text-align: center;
+	color:black;
+}
+
+#amtInv{
+	background: url(images/rupee.png) no-repeat 7px 18px;
+	padding-left:20px;
+}
+.time{
+	position: relative;
+	top: 10px;
+	left: -27px;
+	font-size: 6px;
+	width:50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+li{
+	padding-bottom:10px;
+	padding-top: 10px; 
+}
+	
+}
