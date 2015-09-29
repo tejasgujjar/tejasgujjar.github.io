@@ -56,6 +56,7 @@ function RadiusWidget(startingRadiusVal) {
 	 			strokeOpacity:0.4,
 	 			strokeWeight:2,
 	 			fillColor:"#0000FF",
+	 			clickable: false,
 	 			fillOpacity:0.05
 	});
  			// Set the distance property value.

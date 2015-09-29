@@ -8,28 +8,23 @@
 		<link href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css" media="screen"/>
 		<link href="css/styles.css" rel="stylesheet" type="text/css" media="screen"/>
 		
-		
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 		<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
 		<script type="text/javascript" src="js/jquery.mobile-1.4.4.js"></script>
 		<script type="text/javascript" src="js/jquery.blockUI_2.66.js"></script>
+		
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/mapWidget.js"></script>
-		<script type="text/javascript" src="js/createGeofence.js"></script>
+		<!-- <script type="text/javascript" src="js/createGeofence.js"></script> -->
 		<script type="text/javascript" src="js/geofenceMap.js"></script>
 		
-		
 		<!-- <script type="text/javascript" src="cordova.js"></script> -->
-		
-		<!-- <script type="text/javascript" src="js/bgServicesScript.js"></script> -->
-		
-		
+		 
 	</head>
 <body class="graybg">
 	<div id="createGeofencePage" class=" wth100">
 					<div id="create_geofence_screen">
 						<div id="create_geofence_name" class="selected-list-name">
-								<div class="left-arrow"></div>
 								<div id="create_geofence_name_text" class="geofence-name alertsName drivezone-name">Set Location</div>	
 								<div  class="on_off_toggle">
 									<select id="createGeofence_select" name="on_off_toggle" data-role="slider">
@@ -48,7 +43,7 @@
 							<div class="disp-tablecell paddingLtRt wth20" id="center_text">Address</div>
 							<div id="address" class="greyClrTxt paddingLtRt">
 								<!-- Manayata Tech Park, Nagavara, Bengaluru, Karnataka, India -->
-								<input type="text" id="inputAddressBar" onfocus="initialize()" />
+								<input placeholder="Enter Location" type="text" id="inputAddressBar" value="" onfocus="initialize()" />
 							</div>
 						</div>
 						<div class="center">
@@ -58,9 +53,26 @@
 					
 						 <div id="create_radius" class="paddingTopBottom wth100 graybottomBr disp-table">
 							<div class="disp-tablecell paddingLtRt wth20" id="radius_text">Radius</div>
-							<div class="greyClrTxt paddingLtRt"><span id="geofence_radius"></span><span style="padding-left:3px;" id="rad_unit">Km</span></div>
+							<div class="greyClrTxt paddingLtRt"><span id="geofence_radius">1.00</span><span style="padding-left:3px;" id="rad_unit">Km</span></div>
 						</div>
-					
+					 <div id="status_div" class="paddingTopBottom wth100 graybottomBr disp-table">
+							<div class="disp-tablecell paddingLtRt wth20" id="radius_text">Current Status</div>
+							<div id="currentStatus" class="greyClrTxt paddingLtRt">Approximately 2 hours (65 KM) away from the destination.	</div>
+						</div>
+						 <div id="status_div" class="paddingTopBottom wth100 graybottomBr disp-table">
+							<div class="disp-tablecell paddingLtRt wth20" id="radius_text">Network Status</div>
+							<div id="networkStatus" class="greyClrTxt paddingLtRt">No network connection from past 56 min. Will update current status once we get back network connection.</div>
+						</div>
+						 <div id="status_div" class="paddingTopBottom wth100 graybottomBr disp-table">
+							<div class="disp-tablecell paddingLtRt wth20" id="radius_text">Update Details</div>
+							<div id="updateStatus" class="greyClrTxt paddingLtRt"></div>
+						</div>
+						<div>
+							<button id="offAlarm">Turn off Alarm</button>
+							<!-- <button id="play">play</button>
+							<button id="stop">stop</button>
+							<button id="create">create file</button> -->
+						</div>
 					</div>
 					<div id="viewMap_screen" class="display_none"> 
 						<div class="wth100 mapHeight" id="map-canvas"></div>
@@ -80,5 +92,6 @@
 					</div>
 				</div>
 			<!-- 	http://stackoverflow.com/questions/17190654/how-to-create-text-file-in-given-directory-in-iphone-and-android -->
+			
 </body>
 </html>

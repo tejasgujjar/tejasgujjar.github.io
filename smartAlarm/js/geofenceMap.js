@@ -17,9 +17,15 @@ var markerId;
 var markerArray = new Array();
 var marker;
 var isEnteredAddress = false;
-
+var globalCurrentLat;
+var globalCurrentLng;
+var globalDistance = 1;
 function loadMap(radVal)
 {
+	trackCurrentLocation();
+var test = $( window ).height();
+test = test -110;
+$("#map-canvas").css("height",test);
 	$('#radius_map_new').val(radVal);
 	console.log("loading map");
 	console.log("jump , geofenceMap ="+geofenceMap);
@@ -27,7 +33,7 @@ function loadMap(radVal)
 	{
 		var mapDiv = document.getElementById('map-canvas');
 		geofenceMap = new google.maps.Map(mapDiv, {
-			zoom:15,
+			zoom:13,
 			panControl:false,
 			zoomControl:false,
 			mapTypeControl:true,
@@ -43,6 +49,15 @@ function loadMap(radVal)
 		  geofenceMap.setZoom(geofenceMap.getZoom());
 	    });
 	}
+	var Location = new google.maps.LatLng(globalCurrentLat, globalCurrentLng);
+	var CurrenLocMarker = new google.maps.Marker({
+	  	position: Location,
+        draggable: false,
+        title: 'Current location',
+        icon:'images/curloc4.png'
+     });
+	CurrenLocMarker.setMap(geofenceMap);
+	console.log('current loca marker :'+Location);
 	if(isEnteredAddress)
 	{
 		refreshMap(globalMarkerLocation,radVal);
@@ -139,7 +154,7 @@ function refreshMap(markerLocation,radVal)
 			    {
 				  google.maps.event.trigger(geofenceMap, 'resize');
 				  geofenceMap.setZoom(geofenceMap.getZoom());
-					geofenceMap.setCenter(markerLocation);
+				//	geofenceMap.setCenter(markerLocation);
 			    });
 
 	handleMarker();
@@ -211,9 +226,6 @@ function saveMapData()
 	submittedRadius = globalRadius;
 	submittedLocation = globalMarkerLocation;
 	var radius_Unit = 'Km';	
-	if($('#mi_img').hasClass('radio-select')){
-		radius_Unit = 'Mi';
-	}
 	$('#rad_unit').text(radius_Unit);
 	$('#geofence_radius').text(globalRadius);
 }
@@ -229,9 +241,90 @@ function restoreMapData()
 		{
 			globalRadius = startingRadiusVal;
 			globalMarkerLocation = homeLocation;
-			if($('#mi_img').hasClass('radio-select')){
-				$('#mi_img').removeClass('radio-select').addClass('radio-unselect');
-		   		$('#km_img').removeClass('radio-unselect').addClass('radio-select');
-			}			
 		}
+}
+
+var onSuccess = function(position) {
+    console.log('Latitude: '          + position.coords.latitude          + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' +
+          'Altitude: '          + position.coords.altitude          + '\n' +
+          'Accuracy: '          + position.coords.accuracy          + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          'Heading: '           + position.coords.heading           + '\n' +
+          'Speed: '             + position.coords.speed             + '\n' +
+          'Timestamp: '         + position.timestamp                + '\n');
+    
+    globalCurrentLat = position.coords.latitude;
+    globalCurrentLng = position.coords.longitude;
+    console.log("current loc details: Lat "+ globalCurrentLat + "Lng : "+globalCurrentLng);
+};
+
+// onError Callback receives a PositionError object
+//
+function onError(error) {
+	console.log('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
+function calculateDistance()
+{
+	if(globalMarkerLocation != null)
+	{
+		var markerLat = globalMarkerLocation.lat();
+		var markerLng = globalMarkerLocation.lng();
+		var distance = getDistanceFromLatLonInKm(globalCurrentLat,globalCurrentLng,markerLat,markerLng);
+		globalDistance = distance.toFixed(2);
+		var radius = $('#geofence_radius').text();
+		if(radius > distance)
+		{
+			onAlarm();		
+		}
+	}
+	else
+	{
+		console.log("Please select Location.");
+	}
+}
+
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+	  var R = 6371; // Radius of the earth in km
+	  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+	  var dLon = deg2rad(lon2-lon1); 
+	  var a = 
+	    Math.sin(dLat/2) * Math.sin(dLat/2) +
+	    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+	    Math.sin(dLon/2) * Math.sin(dLon/2)
+	    ; 
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	  var d = R * c; // Distance in km
+	  return d;
+}
+function deg2rad(deg) {
+		var ret = deg * (Math.PI/180);
+	  return ret;
+}
+
+function onAlarm()
+{
+	 if(isDeviceReady)
+	 {
+	 playAudio();
+	 navigator.notification.vibrate(500);
+	 setTimeout(function(){
+		 navigator.notification.vibrate(500);
+	 }, 1000);
+	 }else{alert("Device not ready");}
+	 
+}
+
+function offAlarm()
+{
+	stopAudio();
+	document.getElementById("viewmap_button").disabled = false;
+	document.getElementById("offAlarm").disabled = true;
+	localStorage.setItem("bgServiceStatus", "notrunning");
+	stopBgService();
+	$("#createGeofence_select").val('off').slider('refresh');
+	$('#updateStatus').text("No details available. Please activate alarm.");
+	$('#currentStatus').text("Alarm deactivated.");
 }

@@ -116,14 +116,14 @@ ul{-webkit-padding-start:0 !important;margin:0;}
 .center {
     margin-left: auto;
     margin-right: auto;
-   /*  width: 50%; */
+    width: 50%; 
 }
 .paddingTopBottom7{padding:7px 0px;}
 .wth12{width:12%;}
 .selected{font-size:40px;color:#456F9A;}
 .thermoDegree ul li{display: inline-block;}
-.graybg{background: -webkit-gradient(linear, left top, left bottom, from(#ddd ), to(#CEECF5), color-stop(90%, #CEECF5 ) ) !important;}
-.blue-border{border:1px solid #81BEF7;}
+.graybg{background: -webkit-gradient(linear, left top, left bottom, from(#ddd ), to(#FFFF99), color-stop(90%, #FFFF99 ) ) !important;}
+.blue-border{border:1px solid #81BEF7;}  /* green:A3FFA3 */
 
 .purple-txt{color:#0B243B;border-bottom:1px solid #CDCED1;margin-bottom:2%}
 .medium-txt{font-size: medium;}
@@ -252,4 +252,8 @@ margin-left: 4%;
 .radio-select{content: url('../images/radiobutton_selected.png') no-repeat 0 0 ;display:inline-block;width:30px; height:30px; vertical-align: middle; }
 .txtAln-lft{text-align: left;}
 #viewMap_screen .radio-select, #viewMap_screen .radio-unselect{display:table-cell !important;vertical-align: middle;padding:10px 0 0 2px;} 
-
+.splash_div{
+margin-left: 50px;
+   
+	margin-top:200px;
+}

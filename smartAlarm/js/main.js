@@ -1,11 +1,51 @@
 $(document).ready(function()
 {
 	allevents();
-	
+	document.addEventListener("deviceready", onDeviceReady, true);
+	// document.addEventListener('deviceready', function() {
+			// alert("device ready	");
+				// myService = cordova.plugins.myService;
+				// getStatus();
+  			// }, true);
 });
-
+var isDeviceReady = false;
+var myMedia;
+var writeText;
+var txtAlert;
 function allevents(){
-	
+	 // Retrieve
+    var check = $('#updateStatus').text();//initial text in html is blank 
+    if(check == "")
+    {
+    	 localStorage.setItem("bgServiceStatus", "notrunning");
+    }
+    txtAlert = localStorage.getItem("bgServiceStatus");
+    if(txtAlert != null)
+    {
+    	if(txtAlert == "running")
+    		{
+    		$("#createGeofence_select").val('on').slider('refresh');
+    		$('#currentStatus').text("Approximately 3 hours (88 KM) away from the destination.");
+    		document.getElementById("viewmap_button").disabled = true;
+			document.getElementById("offAlarm").disabled = false;
+    		}
+    	else
+    		{
+	    		$("#createGeofence_select").val('off').slider('refresh');
+	    		$('#updateStatus').text("No details available. Please activate alarm.");
+	    		$('#currentStatus').text("Alarm deactivated.");
+	    		document.getElementById("viewmap_button").disabled = false;
+				document.getElementById("offAlarm").disabled = true;
+    		}
+    }
+    else
+    {
+    	$("#createGeofence_select").val('off').slider('refresh');
+    	$('#updateStatus').text("No details available. Please activate alarm.");
+		$('#currentStatus').text("Alarm deactivated.");
+		document.getElementById("viewmap_button").disabled = false;
+		document.getElementById("offAlarm").disabled = true;
+    }
 	$('#viewmap_button').unbind();
 	$('#viewmap_button').bind('click',function(){
 		$('#create_geofence_screen').hide();
@@ -32,144 +72,210 @@ function allevents(){
 		enteredRadiusVal();
 	});
 	
+	    $('#offAlarm').unbind();
+	    $('#offAlarm').bind('click',function(){
+	    	offAlarm();
+	    });
+	 /*   $('#create').unbind();
+	    $('#create').bind('click',function(){
+	    	if(isDeviceReady)
+	    		{
+	    		//writeFile("Hello Again");
+	    		}else{alert("Device not ready");}
+	    });*/
+	
 	$(document).on('slidestop', '#createGeofence_select', function(){
 		var togg = document.getElementById("createGeofence_select").value;
 		if(togg=="on")
 		{
-			createGeofence();
+			var val = $('#inputAddressBar').val();
+			if(globalMarkerLocation == null || val == "" )
+				{
+				$("#createGeofence_select").val('off').slider('refresh');
+					alert("Please select address");
+				}
+			else
+				{
+					if (typeof(Storage) != "undefined") {
+					    // Store
+					    localStorage.setItem("bgServiceStatus", "running");
+					   
+					} else {
+						alert("Sorry, your browser does not support Web Storage...");
+					}
+					startBgService();
+					document.getElementById("viewmap_button").disabled = true;
+					document.getElementById("offAlarm").disabled = false;
+				}
 		}
 		else if(togg == "off")
 		{
+			offAlarm();
+			/*document.getElementById("viewmap_button").disabled = false;
+			document.getElementById("offAlarm").disabled = true;
 			//off function
+			stopAudio();
+			  localStorage.setItem("bgServiceStatus", "notrunning");
+			$('#updateStatus').text("No details available. Please activate alarm.");
+    		$('#currentStatus').text("Alarm deactivated.");
+    		stopBgService();*/
 		}
 	});
+}
+
+function onDeviceReady() {
+	isDeviceReady = true;
+	//writeFile("Hello");
+     myMedia = new Media('sound.mp3', stopAudio);
+	 //alert("device ready. Welcome");
+	myService = cordova.plugins.myService;
+	checkConnection();
+	trackCurrentLocation();
+}
+
+function trackCurrentLocation()
+{
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+}
+
+function gotFS(fileSystem) {
+        fileSystem.root.getFile("test.txt", {create: true}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+    }
+
+    function gotFileWriter(writer) {
+        writer.onwrite = function(evt) {
+            console.log("write success");
+        };
+        writer.write(writeText)
+    }
+
+    function fail(error) {
+        if(error.code == 1){
+            alert('not found');
+        }
+        alert(error.code);
+    }
+
+    function writeFile(msg)
+    {
+    	 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+    	writeText = msg;
+    }
+	
+	function playAudio()
+  {
+    myMedia.play();
+  }
+
+  function stopAudio()
+  {
+    myMedia.stop();
+  }
+  
+function getStatus() {
+	myService.getStatus(function(r){displayResult(r);}, function(e){displayError(e);});
+	}
+
+function displayResult(data) {
+	alert("Is service running: " + data.ServiceRunning);
+	}
+
+function displayError(data) {
+	alert("We have an error");
+}
+function updateHandler(data)
+{
+	if (data.LatestResult != null)
+	{
+		try
+		{			
+			//alert("latitude "+data.LatestResult.latitude);
+			//alert("longitude "+data.LatestResult.longitude);
+		}
+		catch (err){}
+   	}
+	
+	var dateObj = new Date();
+	console.log("neha   "+dateObj);
+	checkConnection();
+	trackCurrentLocation();
+	setTimeout(function(){
+		calculateDistance();
+		$('#currentStatus').text("Approximately 2.5 hours ("+globalDistance+" KM) away from the destination.");
+	}, 500);
+	//calculateDistance();
+	$('#updateStatus').text(dateObj);
 	
 }
-function pickDate(str){
-	if(str != null){
-		var dateTime = convertStringToDate(str);
-		return getLocalizedDateStr(dateTime);
-	}
-	return null;
-}
-function pickTime(str){
-	if(str != null)
+
+function go()
+{
+	if(myService != undefined)
+		myService.getStatus(function(r){startService(r);}, function(e){displayError(e);});
+};
+
+function startService(data) {
+	if (data.ServiceRunning) {
+	      enableTimer(data);
+	   }
+	else
 	{
-		var dateTime = convertStringToDate(str);
-		var timeStr = formatAMPM(dateTime);
-		return timeStr;	
+		myService.startService(function(r){enableTimer(r);}, function(e){displayError(e);});
 	}
-	return null;
+}
+	
+function enableTimer(data) {
+	if (data.TimerEnabled) {
+	      registerForUpdates(data);
+	   } 
+	else {
+	      myService.enableTimer(20000, function(r){registerForUpdates(r);}, function(e){displayError(e);});
+	   }
 }
 
-convertStringToDate = function(str)
-{
-    var retDate = null;
-    if (str != null)
-    {
-    	if(str instanceof Date)
-		{
-			retDate = str;
-		}
-    	else
-		{
-			retDate = new Date(str);
-		}
-    }
-   return retDate;
-};
-
-function formatNewAMPM(date)
-{
-	date.setMinutes(Math.ceil(date.getMinutes()/15) * 15);
-	var hours = date.getHours();
-	var minutes = date.getMinutes();
-	var ampm = hours >= 12 ? 'PM' : 'AM';
-	hours = hours % 12;
-	hours = hours ? hours : 12; // the hour '0' should be '12'
-	hours = ('0' + String(hours)).substr(-2);
-	minutes = ('0' + String(minutes)).substr(-2);
-	var strTime = hours + ':' + minutes + ' ' + ampm;
-	return strTime;
-}
-
-getLocalizedDateStr = function(dateVal)
-{
-    if (dateVal == null || 
-       !(dateVal instanceof Date))
-    {
-       return dateVal;
-    }
-    var str = dateVal.toDateString();
-    str = str.replace(dateVal.toString().split(" ")[0], shortDayNames[dateVal.getDay()]);
-    str = str.replace(dateVal.toString().split(" ")[1], shortMonthNames[dateVal.getMonth()]);
-    if(navigator.language.search('en') == 0)
-    {
-    	str = getNewFormatDate(str);
-    }
-    return str;
-};
-
-getNewFormatDate = function(dateVal)
-{
-	var str = dateVal.split(' ');
-	var newStr = '';
-	newStr = newStr+ str[0];
-	newStr = newStr+", ";
-	newStr = newStr+str[1];
-	newStr = newStr+". ";
-	newStr = newStr+str[2];
-	newStr = newStr+", ";
-	newStr = newStr+str[3];
-	return newStr;
-};
-
-function formatAMPM(date)
-{
-	var hours = date.getHours();
-	var minutes = date.getMinutes();
-	var ampm = hours >= 12 ? 'PM' : 'AM';
-	hours = hours % 12;
-	hours = hours ? hours : 12; // the hour '0' should be '12'
-	hours = ('0' + String(hours)).substr(-2);
-	minutes = ('0' + String(minutes)).substr(-2);
-	var strTime = hours + ':' + minutes + ' ' + ampm;
-	return strTime;
-}
-
-function GetTimezoneShort(now)
-{
-	if(now==null)
-		return '';
-	var str = now.toString();
-    // Split on the first ( character
-    var s = str.split("(");
-    if (s.length == 2)
-    {
-    	// remove the ending ')'
-    	var n = s[1].replace(")", "");
-    	return n;
-    }
-}
-function pickNewTime(str){
-	if(str != null && str != "")
+function registerForUpdates(data) {
+	if (!data.RegisteredForUpdates)
 	{
-		var dateTime = convertStringToDate(str);
-		var timeStr = formatNewAMPM(dateTime);
-		return timeStr;	
+		myService.registerForUpdates(function(r){updateHandler(r);}, function(e){handleError(e);});
 	}
-	return null;
 }
-function formatNewAMPM(date)
+
+function handleSuccess(data){
+	//alert("Service has de register For Updates");
+}
+
+function handleError(data) {
+	//alert("We have an error in stopping service");
+}
+
+function startBgService()
 {
-	date.setMinutes(Math.ceil(date.getMinutes()/15) * 15);
-	var hours = date.getHours();
-	var minutes = date.getMinutes();
-	var ampm = hours >= 12 ? 'PM' : 'AM';
-	hours = hours % 12;
-	hours = hours ? hours : 12; // the hour '0' should be '12'	
-	hours = ('0' + String(hours)).substr(-2);
-	minutes = ('0' + String(minutes)).substr(-2);
-	var strTime = hours + ':' + minutes + ' ' + ampm;
-	return strTime;
+	go();
 }
+function stopBgService()
+{
+	if(myService != null)
+		myService.stopService(function(r){handleSuccess(r);}, function(e){handleError(e);});
+}
+
+function checkConnection() {
+    var networkState = navigator.connection.type;
+
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Currently using Unknown connection';
+    states[Connection.ETHERNET] = 'Currently using Ethernet connection';
+    states[Connection.WIFI]     = 'Currently using WiFi connection';
+    states[Connection.CELL_2G]  = 'Currently using Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Currently using Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Currently using Cell 4G connection';
+    states[Connection.CELL]     = 'Currently using Cell generic connection';
+    states[Connection.NONE]     = 'No network connection from past 7 minutes';
+
+    $('#networkStatus').text(states[networkState]);
+     //   alert('Connection type: ' + states[networkState]);
+}
+
