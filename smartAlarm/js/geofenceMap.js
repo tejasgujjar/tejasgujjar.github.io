@@ -20,6 +20,7 @@ var isEnteredAddress = false;
 var globalCurrentLat;
 var globalCurrentLng;
 var globalDistance = 1;
+var CurrentLat, CurrentLng;
 
 function getCurrentLocation()
 {
@@ -33,8 +34,11 @@ function getCurrentLocation()
 
 function showPosition(position)
 {
-	globalMarkerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-	  return globalMarkerLocation;
+	alert("lat and lng: "+position.coords.latitude+" "+position.coords.longitude);
+	CurrentLat = position.coords.latitude;
+	CurrentLng = position.coords.longitude;
+	//globalMarkerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	 // return globalMarkerLocation;
 	//alert("initial loc:: "+initialLocation);
 	  }
 	function showError(error)
@@ -55,8 +59,10 @@ alert("errro");
 	    alert("An unknown error occurred.");
 	    break;
 	    }
-	  globalMarkerLocation = new google.maps.LatLng(homeLat, homeLng);
-	  return globalMarkerLocation;
+		CurrentLat = homeLat;
+		CurrentLng = homeLng;
+	//  globalMarkerLocation = new google.maps.LatLng(homeLat, homeLng);
+	//  return globalMarkerLocation;
 	//alert("initial loc defined:: "+initialLocation);
 	  }	
 }
@@ -91,7 +97,8 @@ $("#map-canvas").css("height",test);
 		  geofenceMap.setZoom(geofenceMap.getZoom());
 	    });
 	}
-	var Location = getCurrentLocation();
+	getCurrentLocation();
+	var Location = new google.maps.LatLng(CurrentLat, CurrentLng);
 	var CurrenLocMarker = new google.maps.Marker({
 	  	position: Location,
         draggable: false,
@@ -101,7 +108,8 @@ $("#map-canvas").css("height",test);
 	CurrenLocMarker.setMap(geofenceMap);
 	geofenceMap.setCenter(Location);
 	console.log('current loca marker :'+Location);
-	alert("loc "+Location);
+	console.log("loc "+Location);
+	globalMarkerLocation  = Location;
 	if(isEnteredAddress)
 	{
 		refreshMap(globalMarkerLocation,radVal);
@@ -194,6 +202,7 @@ function refreshMap(markerLocation,radVal)
 		  //animation:google.maps.Animation.DROP
 		  });
 	marker.setMap(geofenceMap);
+	geofenceMap.setCenter(markerLocation);
 	 google.maps.event.addListener(geofenceMap, "idle", function()
 			    {
 				  google.maps.event.trigger(geofenceMap, 'resize');
