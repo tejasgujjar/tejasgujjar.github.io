@@ -34,7 +34,7 @@ function getCurrentLocation()
 
 function showPosition(position)
 {
-	alert("lat and lng: "+position.coords.latitude+" "+position.coords.longitude);
+	//alert("lat and lng: "+position.coords.latitude+" "+position.coords.longitude);
 	CurrentLat = position.coords.latitude;
 	CurrentLng = position.coords.longitude;
 	//globalMarkerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -43,7 +43,7 @@ function showPosition(position)
 	  }
 	function showError(error)
 	  {
-alert("errro");
+alert("Error in fetching current location");
 	  switch(error.code)
 	    {
 	    case error.PERMISSION_DENIED:
