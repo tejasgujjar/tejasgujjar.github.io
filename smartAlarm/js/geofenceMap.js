@@ -372,11 +372,15 @@ function onAlarm()
 
 function offAlarm()
 {
-	stopAudio();
+	
 	document.getElementById("viewmap_button").disabled = false;
 	document.getElementById("offAlarm").disabled = true;
 	localStorage.setItem("bgServiceStatus", "notrunning");
-	stopBgService();
+	if(isDeviceReady)
+	{
+		stopAudio();
+		stopBgService();
+	}
 	$("#createGeofence_select").val('off').slider('refresh');
 	$('#updateStatus').text("No details available. Please activate alarm.");
 	$('#currentStatus').text("Alarm deactivated.");
