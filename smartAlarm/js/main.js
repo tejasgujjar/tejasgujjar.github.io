@@ -104,7 +104,8 @@ function allevents(){
 					} else {
 						alert("Sorry, your browser does not support Web Storage...");
 					}
-					startBgService();
+					if(isDeviceReady)
+						startBgService();
 					document.getElementById("viewmap_button").disabled = true;
 					document.getElementById("offAlarm").disabled = false;
 				}
@@ -125,6 +126,7 @@ function allevents(){
 }
 
 function onDeviceReady() {
+	alert();
 	isDeviceReady = true;
 	//writeFile("Hello");
      myMedia = new Media('sound.mp3', stopAudio);
