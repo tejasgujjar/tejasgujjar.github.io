@@ -354,9 +354,9 @@ margin-left: 50px;
 
 /* style for 3D button */
 .button {
-    position: absolute;
+  /*   position: absolute;
     top: 100px;
-    left: 200px;
+    left: 200px; */
     display: inline-block;
     margin: 0 auto;
     
@@ -372,6 +372,13 @@ margin-left: 50px;
         0px 14px 6px -1px rgba(128,128,128,1); /* shadow */
     
     -webkit-transition: -webkit-box-shadow .1s ease-in-out;
+    
+       -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 } 
 
 .button span {
@@ -426,7 +433,7 @@ margin-left: 50px;
     -webkit-background-size: 100%, 100%, 100%, 4px 4px;
     
     -webkit-border-radius: 10px;
-    -webkit-transition: -webkit-transform .1s ease-in-out;
+    -webkit-transition: -webkit-transform .112s ease-in-out;
     
     display: inline-block;
     padding: 10px 40px 10px 40px;
@@ -439,13 +446,13 @@ margin-left: 50px;
     
     text-shadow: 0px 1px #fff, 0px -1px #262F33;
 }
-
+/* 
         .button span:hover {
             color: #AEBF3B;
             text-shadow: 0px -1px #97A63A;
             cursor: pointer;
         }
-
+ */
         .button:active {
             -webkit-box-shadow: 
                 0px 3px rgba(128,128,128,1),
@@ -458,7 +465,8 @@ margin-left: 50px;
         }
 
         .button:active span{
-            -webkit-transform: translate(0, 5px); /* depth of button press */
+           color: #AEBF3B;
+            -webkit-transform: translate(0, 7px); /* depth of button press */
         }
 
    	.button span:after {
@@ -467,9 +475,9 @@ margin-left: 50px;
         width: 10px;
         height: 1px;
     
-        position: absolute;
+       /*  position: absolute;
         right: 14px;
-        top: 12px;    
+        top: 12px;  */   
         
         font-family: 'Cabin';
         font-weight: 700;
