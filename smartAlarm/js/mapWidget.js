@@ -9,6 +9,7 @@ var circles = {};
 var id;
 var arr = new Array();
 var uniqueNumber =1;
+//clears all markers
 function clearAllMarkers()
 {
 	console.log("clearing marker");
