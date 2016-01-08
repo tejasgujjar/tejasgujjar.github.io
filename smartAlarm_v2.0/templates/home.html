@@ -1,0 +1,41 @@
+<ion-view view-title="Home" class="p">
+  <ion-content ng-controller="homeCtrl">
+   
+   	<ul class="list">
+	  <li class="item item-toggle">
+    	 Set Location of Destination  
+     	<label class="toggle toggle-positive">
+	        <input type="checkbox">
+	        <div class="track">
+	          <div class="handle"></div>
+	       	</div>
+    	</label>
+ 	  </li>
+ 	  <label class="item item-input">
+		  <span class="input-label ">Address</span>
+		  <input id="inputAddressBar" class="inputBG" ng-click="initialize()" type="text">
+		   
+	  </label>
+	<button ng-click="showMap()" class="button button-small button-block ion-android-pin button-positive"> View Map</button>
+	<!-- <a href="#/mapPage">Map page</a> -->
+	  <label class="item item-input">
+		  <span class="input-label ">Radius</span>
+		   <span id="geofence_radius">10</span> <span> KM</span>
+	  </label>
+	  <label class="item item-input">
+		  <span class="input-label ">Current Status</span>
+		  <span>Activated</span>
+	  </label>
+	  <label class="item item-input">
+		  <span class="input-label ">Network Status</span>
+		   <span>TEst test</span>
+	  </label>
+	  <label class="item item-input">
+		  <span class="input-label ">Update Details</span>
+		 <span>heyy there</span>
+	  </label>
+
+
+</ul>
+  </ion-content>
+</ion-view>
