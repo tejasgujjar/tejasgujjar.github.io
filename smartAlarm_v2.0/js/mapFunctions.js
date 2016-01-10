@@ -1,6 +1,3 @@
-var homeLat =13.0502745;
-var homeLng =77.6232895;
-var geofenceMap = null;
 var distanceWidget;
 var executeOnce;
 var homeLat =13.0502745;
@@ -32,14 +29,10 @@ function preReqsForMap()
 		console.log("deviceready");
     	console.log(navigator.vibrate);
     	getCurrentLocation();
-    	chrome.alarms.create("testAlarm", {
-       when: Date.now()+30, periodInMinutes: 0.1});
+    	
 	}
 
-	setTimeout(function(){
-		console.log("Clearing alarm now");
-		 chrome.alarms.clear("testAlarm");
-	},10000)
+	
 }
 
 function getCurrentLocation()

@@ -78,7 +78,7 @@ console.log("tstHOme");
   });
  $scope.showMap = function() {
     $scope.modal.show();
-    loadMap(1);
+    //loadMap(1);
   };
  $scope.closeMap = function() {
     $scope.modal.hide();
@@ -88,17 +88,56 @@ console.log("tstHOme");
   };
 });
 
-myApp.controller('mapPageCtrl',function($scope, $stateParams){
+/*myApp.controller('mapPageCtrl',function($scope, $stateParams){
   console.log("mapp page");
-$scope.radiusKeyup = function(){
-  console.log("Entered radius_map_new");
-  enteredRadiusVal();
-}
-
-
+    $scope.radiusKeyup = function(){
+      console.log("Entered radius_map_new");
+      enteredRadiusVal();
+    }
 $scope.sliderChange = function(){
   console.log("Entered slider");
  // enteredRadiusVal();
-}
-
+  }
 });
+*/
+   myApp.controller('mapPageCtrl', function($scope, $ionicLoading) {
+      function initialize() {
+        var homeLat =13.0502745;
+var homeLng =77.6232895;
+var homeLocation = new google.maps.LatLng(homeLat, homeLng);
+         console.log("initializeINGGGG");
+        var mapOptions = {  
+          center: new google.maps.LatLng(43.07493,-89.381388),
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map"),
+            mapOptions);
+
+        // Stop the side bar from dragging when mousedown/tapdown on the map
+        google.maps.event.addDomListener(document.getElementById('map'), 'mousedown', function(e) {
+        alert("clicked");
+        });
+
+        $scope.map = map;
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+      
+      $scope.centerOnMe = function() {
+        initialize();
+
+       console.log("center on me clicked");
+        if(!$scope.map) {
+          console.log("error in map");
+          return;
+        }
+
+        // $scope.loading = $ionicLoading.show({
+        //   content: 'Getting current location...',
+        //   showBackdrop: false
+        // });
+console.log("Getting msg");
+   $scope.map.setCenter(homeLocation);
+     
+      };
+    });
