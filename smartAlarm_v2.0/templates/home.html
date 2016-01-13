@@ -2,37 +2,45 @@
   <ion-content ng-controller="homeCtrl">
    
    	<ul class="list">
-	  <li class="item item-toggle">
+	 <!--  <li class="item item-toggle">
     	 Set Location of Destination  
      	<label class="toggle toggle-positive">
-	        <input type="checkbox">
+	        <input type="checkbox" ng-model="togleAlarm">
 	        <div class="track">
 	          <div class="handle"></div>
 	       	</div>
-    	</label>
- 	  </li>
+    	</label>	
+ 	  </li> -->
+ 	  <ion-toggle ng-model="pushNotification.checked"
+                    ng-change="pushNotificationChange()" ng-checked="pushNotification.checked">
+          Set Location of Destination  
+        </ion-toggle>
  	  <label class="item item-input">
 		  <span class="input-label ">Address</span>
-		  <input id="inputAddressBar" class="inputBG" ng-click="initialize()" type="text">
-		   
+		  <input id="inputAddressBar" class="inputBG" ng-click="initialize()" type="text" value="" placeholder="Enter location">
 	  </label>
+
 	<button ng-click="showMap()" class="button button-small button-block ion-android-pin button-positive"> View Map</button>
 	<!-- <a href="#/mapPage">Map page</a> -->
 	  <label class="item item-input">
 		  <span class="input-label ">Radius</span>
-		   <span id="geofence_radius">10</span> <span> KM</span>
+		   <span id="geofence_radius">10</span> <span>&nbsp; KM</span>
 	  </label>
 	  <label class="item item-input">
 		  <span class="input-label ">Current Status</span>
-		  <span>Activated</span>
+		  <span class="item item-text-wrap" id="currentStatus">Deactivated <br> <p id="bgStatus">Background status</p>   </span>
 	  </label>
 	  <label class="item item-input">
 		  <span class="input-label ">Network Status</span>
-		   <span>TEst test</span>
+		   <span id="networkStatus">test</span>
 	  </label>
 	  <label class="item item-input">
 		  <span class="input-label ">Update Details</span>
-		 <span>heyy there</span>
+		 <span class="item item-text-wrap">Last Update (mm-dd-yyyy):<br> <p id="updatedTime"> No update available.</p></span>
+	  </label>
+	   <label class="item item-input">
+		  <span class="input-label ">Remaining Distance</span>
+		 <span id="remainingDistance">0</span><span>&nbsp;KM</span>
 	  </label>
 
 

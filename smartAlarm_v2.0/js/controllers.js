@@ -47,18 +47,23 @@ myApp.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
 myApp.controller('savedDestinationsCtrl', function($scope) {
   $scope.savedDestinationList = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
+    { title: 'Saved Destination 1', id: 1 },
+    { title: 'Saved Destination 2', id: 5 },
+    { title: 'Saved Destination 3', id: 6 }
   ];
-  alert("gett");
+  //alert("gett");
 })
 
 myApp.controller('savedDestinationCtrl', function($scope, $stateParams) {
-alert("tst");
+//alert("tst");
+});
+
+myApp.controller('exitCtrl', function($scope, $stateParams) {
+
+   $scope.exitApp = function() {
+      //alert("Exiting");
+   navigator.app.exitApp(); 
+  };
 });
 
 myApp.controller('homeCtrl', function($scope, $stateParams,$ionicModal) {
@@ -71,14 +76,32 @@ console.log("tstHOme");
     console.log("testmap+modal");
   });
 
+
  preReqsForMap();
- $('#radius_map_new').keyup(function(){
-    alert("testtt");
-    enteredRadiusVal();
-  });
+ //alert("toggle status "+$scope.togleAlarm);
+  $scope.pushNotificationChange = function() {
+    console.log("Toggle:  "+$scope.pushNotification.checked);
+    toggleChange($scope.pushNotification.checked);
+  //  if($scope.pushNotification.checked)
+  //  {
+  //   alert("true");
+  //   setTimeout(function(){
+  // $scope.pushNotification = true;
+  //   },1000);
+  
+  //  }
+  //  else
+  //  {
+  //     alert("false");
+  //       setTimeout(function(){
+  // $scope.pushNotification = true;
+  //   },1000);
+  //  }
+  };
+ 
  $scope.showMap = function() {
     $scope.modal.show();
-    //loadMap(1);
+    loadMap(1);
   };
  $scope.closeMap = function() {
     $scope.modal.hide();
@@ -100,6 +123,40 @@ $scope.sliderChange = function(){
   }
 });
 */
+//-------------------
+
+
+myApp.controller('mapCtrl',function($scope, $stateParams,  $ionicPopup){
+  console.log("loaded map ctrl");
+
+ $scope.radiusKeyup = function() {
+  //alert("testsdsdtt");
+  enteredRadiusVal();
+}
+$scope.setLevelText = function(rangeValue) {
+  //  console.log('range value has changed to :'+$scope.levelvalue);
+    //$scope.data.testvariable = $scope.data.levelvalue;
+    radiusRangeChanged($scope.levelvalue);
+  }
+
+$scope.saveMapData = function() {
+  //alert("testsdsdtt");
+ saveMapRelatedData();
+    $scope.modal.hide();
+}
+
+});
+
+
+
+
+
+
+
+
+
+
+//-------------------
    myApp.controller('mapPageCtrl', function($scope, $ionicLoading) {
       function initialize() {
         var homeLat =13.0502745;
@@ -115,8 +172,8 @@ var homeLocation = new google.maps.LatLng(homeLat, homeLng);
             mapOptions);
 
         // Stop the side bar from dragging when mousedown/tapdown on the map
-        google.maps.event.addDomListener(document.getElementById('map'), 'mousedown', function(e) {
-        alert("clicked");
+        google.maps.event.addListener(map, 'click', function(e) {
+        alert("clicked "+e.latLng);
         });
 
         $scope.map = map;

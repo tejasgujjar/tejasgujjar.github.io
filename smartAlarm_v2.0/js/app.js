@@ -50,6 +50,23 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+  .state('app.about', {
+      url: '/about',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/about.html'
+        }
+      }
+    })
+  .state('app.exit', {
+      url: '/exit',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/exit.html',
+          controller: 'exitCtrl'
+        }
+      }
+    })
     .state('app.mapPage', {
       url: '/mapPage',
       views: {

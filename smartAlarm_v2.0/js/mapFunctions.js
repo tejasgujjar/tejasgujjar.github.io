@@ -20,6 +20,11 @@ var globalCurrentLat;
 var globalCurrentLng;
 var globalDistance = 1;
 var CurrentLat, CurrentLng;
+var clickedAddress="";
+var toggleSwitch = false;
+var bgIntervalId=0;
+var cntr = 0;
+var delayInterval = 1000 * 40; //40 seconds
 
 function preReqsForMap()
 {
@@ -27,14 +32,54 @@ function preReqsForMap()
 	document.addEventListener("deviceready", onDeviceReady, false);
 	function onDeviceReady() {
 		console.log("deviceready");
-    	console.log(navigator.vibrate);
+    	//console.log(navigator.vibrate);
+    	navigator.notification.beep(1);
     	getCurrentLocation();
-    	
-	}
+    	checkConnection();
+    	 document.addEventListener("backbutton", function (e) {
+            e.preventDefault();
+        }, false );
+    
+	    cordova.plugins.backgroundMode.setDefaults({ 
+        	title:  'Smart Alarm App',
+        	text:   'Sit Back & Relax! We are working for you.'
+    	});
+    	 // Enable background mode
+    	cordova.plugins.backgroundMode.enable();
 
-	
+    // Called when background mode has been activated
+      cordova.plugins.backgroundMode.onactivate = function () {
+	      	if(toggleSwitch)
+	      	{
+	      		//  alert("running in bg");
+	      		 clearInterval(bgIntervalId);
+	      		  backgroundFunctions();
+	     	 	 bgIntervalId=	setInterval(backgroundFunctions,delayInterval);
+	      	}
+		 }
+		cordova.plugins.backgroundMode.ondeactivate = function() {
+			$('#bgStatus').text("app to foreground. updates in next 40 seconds.");
+			if(toggleSwitch)
+      		{
+      		 // alert("running in bg");
+      		  clearInterval(bgIntervalId);
+      		   backgroundFunctions();
+     		  bgIntervalId=	setInterval(backgroundFunctions,delayInterval);
+      		}
+		}
+	}
 }
 
+
+function onBackKeyDown() {
+//     alert("pressed back buton");
+//     	navigator.Backbutton.goHome(function() {
+//  		alert("successs");
+// }, function() {
+//  alert("failure");
+// });
+
+}
 function getCurrentLocation()
 {
 	  if (navigator.geolocation)
@@ -50,6 +95,8 @@ function showPosition(position)
 	console.log("lat and lng: "+position.coords.latitude+" "+position.coords.longitude);
 	CurrentLat = position.coords.latitude;
 	CurrentLng = position.coords.longitude;
+	globalCurrentLat = CurrentLat;
+	globalCurrentLng = CurrentLng;
 	//globalMarkerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	 // return globalMarkerLocation;
 	//alert("initial loc:: "+initialLocation);
@@ -82,8 +129,8 @@ alert("Error in fetching current location");
 
 
 function loadMap(radVal){
-
-navigator.vibrate(50);
+ 
+navigator.vibrate(40);
 var test = $( window ).height();
  test = test -210;
  $("#map-canvas").css("height",test);
@@ -128,7 +175,7 @@ var test = $( window ).height();
 	if(isEnteredAddress)
 	{
 		console.log("call refresh map");
-		refreshMap(globalMarkerLocation,radVal);
+		//refreshMap(globalMarkerLocation,radVal);
 	}
 	else
 	{
@@ -143,16 +190,23 @@ var test = $( window ).height();
 				console.log("call refresh map & clickedonMap else");
 			}
 	}
-	
+	// 	google.maps.event.addListener(geofenceMap, 'click', function(event) { document.getElementById('map-canvas')
+		//  marker.addListener('click', function() {
+  //   map.setZoom(8);
+  //   map.setCenter(marker.getPosition());
+  // });
+	// 	console.log("addL clicked");
+	// });
 	google.maps.event.addListener(geofenceMap, 'click', function(event) {
 		/*distanceWidget = new DistanceWidget(simulateScreenMap,event.latLng);
 		displayAddress(distanceWidget);*/
-		alert("clicked");
+		console.log("clicked first function "+event.latLng);
+		navigator.vibrate(35);
+	//	alert("clicked first function "+event.latLng);
 		 clickedonMap(event.latLng);
 		 refreshMap(event.latLng,globalRadius);
 		console.log("call refresh map & clickedonMap clicked");
 	});
-
 }
 
 function handleMapEvents(loc,radVal)
@@ -180,7 +234,7 @@ function enteredRadiusVal()
 {
 	var checkRad = document.getElementById('radius_map_new').value;
 	var numbers = /^[0-9]+$/;  
-	console.log("radius"+checkRad);
+	//console.log("radius"+checkRad);
 	// if(checkRad > 100 || (checkRad.match(numbers) ==  false))
 	// if(checkRad > 100 )
 	// 	{ 
@@ -193,7 +247,7 @@ function enteredRadiusVal()
 	// else
 		{
 			globalRadius = checkRad;
-			 $('#radiusRange').val(checkRad);
+			 $('#radius_map_new').val(checkRad);
 			refreshMap(globalMarkerLocation ,globalRadius);
 		}	
 }
@@ -204,9 +258,11 @@ function initialize() {
 	      /** @type {HTMLInputElement} */(document.getElementById('inputAddressBar')),
 	      { types: [] });
 	  // When the user selects an address from the dropdown,populate the address fields in the form.
+	//  alert("initializes");
 	  google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		  isEnteredAddress = true;
 		  fillInAddress(autocomplete.getPlace());
+		 // alert("selected");
 	  });
 	}
 
@@ -217,7 +273,7 @@ function fillInAddress(temp_place) {
   // stops execution if address is not selected from the drop down menu
   globalMarkerLocation = temp_place.geometry.location;
   console.log("selected lat lng: "+globalMarkerLocation);
-  refreshMap(globalMarkerLocation,globalRadius);
+ // refreshMap(globalMarkerLocation,globalRadius);
   geofenceMap = null;
  }
 
@@ -231,7 +287,7 @@ function refreshMap(markerLocation,radVal)
 		  });
 	marker.setMap(geofenceMap);
 	//geofenceMap.setCenter(markerLocation);
-	 google.maps.event.addListener(geofenceMap, "idle", function()
+	 google.maps.event.addDomListener(document.getElementById('map-canvas'), "idle", function()
 			    {
 				  google.maps.event.trigger(geofenceMap, 'resize');
 				  geofenceMap.setZoom(geofenceMap.getZoom());
@@ -263,9 +319,10 @@ var delMarker = function (markerId) {
 
 function clickedonMap(clickedLocation,updateAddrss)
 {
+	console.log("clickedonMap val : "+clickedLocation+"   updateAddrss??"+updateAddrss);
 	var geocoderAlert = true;
 	var geocoder = new google.maps.Geocoder();
-	var clickedAddress;
+	
 	globalMarkerLocation = clickedLocation;
 	geocoder.geocode({'latLng': clickedLocation}, function(results, status) {
 	    if (status == google.maps.GeocoderStatus.OK)
@@ -278,13 +335,13 @@ function clickedonMap(clickedLocation,updateAddrss)
 //				fillInAddress(results[1]);
 				if(updateAddrss)
 				{
-				$('#inputAddressBar').val('');
-				$('#inputAddressBar').val(clickedAddress);
+					$('#inputAddressBar').val('');
+					$('#inputAddressBar').val(clickedAddress);
 				}
 		    }
 		    else
 		    {
-		        alert('No results found');
+		        alert('No results found for clicked location');
 		    }
 	    }
 	    else
@@ -301,14 +358,17 @@ function clickedonMap(clickedLocation,updateAddrss)
 	});	
 }
 
-function saveMapData()
+function saveMapRelatedData()
 {
+	navigator.vibrate(20);
 	isSubmitted = true;
 	submittedRadius = globalRadius;
 	submittedLocation = globalMarkerLocation;
-	var radius_Unit = 'Km';	
-	$('#rad_unit').text(radius_Unit);
+	//var radius_Unit = 'Km';	
+	//$('#rad_unit').text(radius_Unit);
 	$('#geofence_radius').text(globalRadius);
+	$('#inputAddressBar').val(clickedAddress);
+
 }
 
 function restoreMapData()
@@ -356,8 +416,10 @@ function calculateDistance()
 		var distance = getDistanceFromLatLonInKm(globalCurrentLat,globalCurrentLng,markerLat,markerLng);
 		globalDistance = distance.toFixed(2);
 		var radius = $('#geofence_radius').text();
+		//alert("radius :"+radius+" distance :"+distance);
 		if(radius > distance)
 		{
+			//alert("ON ALARM");
 			onAlarm();		
 		}
 	}
@@ -385,3 +447,113 @@ function deg2rad(deg) {
 	  return ret;
 }
 
+function radiusRangeChanged(rangeRadius)
+{
+	console.log("test test"+rangeRadius);
+	globalRadius = rangeRadius;
+			 $('#radius_map_new').val(rangeRadius);
+			refreshMap(globalMarkerLocation ,globalRadius);
+}
+
+function onAlarm()
+{
+	var textBg = "You are close! Distance: "+globalDistance+ "KM";
+	cordova.plugins.backgroundMode.configure({
+	   	title:  'Smart Alarm App',
+        text:   textBg
+	});
+	 navigator.vibrate(1500);
+	 navigator.notification.beep(3);
+	 setTimeout(function(){
+		 navigator.vibrate(1500);
+		 navigator.notification.beep(3);
+	 }, 1000);
+	 delayInterval = 1000 * 10;
+}
+
+function offAlarm()
+{
+	document.getElementById("viewmap_button").disabled = false;
+	document.getElementById("offAlarm").disabled = true;
+	localStorage.setItem("bgServiceStatus", "notrunning");
+	if(isDeviceReady)
+	{
+		stopAudio();
+		stopBgService();
+	}
+	$("#createGeofence_select").val('off').slider('refresh');
+	$('#updateStatus').text("No details available. Please activate alarm.");
+	$('#currentStatus').text("Alarm deactivated.");
+}
+
+function backgroundFunctions()
+{
+	getCurrentLocation();
+	calculateDistance();
+	updateTime();
+	$('#remainingDistance').text(globalDistance);
+	cntr++;
+	$('#bgStatus').text("App is running from past "+cntr+" min.");
+}
+
+function updateTime()
+{
+	var d = new Date();
+	var e = formatDate(d);
+	$('#updatedTime').text(e);
+	//alert(e);
+}
+
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return date.getMonth()+1 + "-" + date.getDate() + "-" + date.getFullYear() + " " + strTime;
+}
+
+function toggleChange(value)
+{
+	var timer;
+	if(value)
+	{
+		backgroundFunctions();
+		$('#currentStatus').text("Activated");
+		cordova.plugins.backgroundMode.enable();
+		toggleSwitch = true;
+		alert("Turning On");
+		 clearInterval(bgIntervalId);
+		 backgroundFunctions();
+		 bgIntervalId=	setInterval(backgroundFunctions,delayInterval);
+	}
+	else{
+	alert("Turning Off");   
+	$('#currentStatus').text("Deactivated");
+	  clearInterval(bgIntervalId);
+	   cordova.plugins.backgroundMode.setDefaults({ 
+        	title:  'Smart Alarm App',
+        	text:   'Sit Back & Relax! We are working for you.'
+    	});
+	 cordova.plugins.backgroundMode.disable();
+	}
+}
+ 
+function checkConnection() {
+    var networkState = navigator.connection.type;
+
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Currently using Unknown connection';
+    states[Connection.ETHERNET] = 'Currently using Ethernet connection';
+    states[Connection.WIFI]     = 'Currently using WiFi connection';
+    states[Connection.CELL_2G]  = 'Currently using Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Currently using Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Currently using Cell 4G connection';
+    states[Connection.CELL]     = 'Currently using Cell generic connection';
+    states[Connection.NONE]     = 'No network connection';
+
+    $('#networkStatus').text(states[networkState]);
+     //   alert('Connection type: ' + states[networkState]);
+}
