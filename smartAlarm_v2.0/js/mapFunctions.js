@@ -33,7 +33,7 @@ function preReqsForMap()
 	function onDeviceReady() {
 		console.log("deviceready");
     	//console.log(navigator.vibrate);
-    	navigator.notification.beep(1);
+    	//navigator.notification.beep(1);
     	getCurrentLocation();
     	checkConnection();
     	 document.addEventListener("backbutton", function (e) {
@@ -58,7 +58,7 @@ function preReqsForMap()
 	      	}
 		 }
 		cordova.plugins.backgroundMode.ondeactivate = function() {
-			$('#bgStatus').text("app to foreground. updates in next 40 seconds.");
+			$('#bgStatus').text("");
 			if(toggleSwitch)
       		{
       		 // alert("running in bg");
@@ -201,7 +201,7 @@ var test = $( window ).height();
 		/*distanceWidget = new DistanceWidget(simulateScreenMap,event.latLng);
 		displayAddress(distanceWidget);*/
 		console.log("clicked first function "+event.latLng);
-		navigator.vibrate(35);
+		navigator.vibrate(25);
 	//	alert("clicked first function "+event.latLng);
 		 clickedonMap(event.latLng);
 		 refreshMap(event.latLng,globalRadius);

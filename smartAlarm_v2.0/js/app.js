@@ -20,6 +20,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       StatusBar.styleDefault();
     }
   });
+
+  $ionicPlatform.registerBackButtonAction(function (e) {
+   //console.log("pressed back");
+   e.preventDefault();
+    }, 100);
+
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
