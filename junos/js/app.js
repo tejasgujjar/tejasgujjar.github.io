@@ -6,10 +6,22 @@
 // 'starter.controllers' is found in controllers.js
 var junosApp = angular.module('starter', ['ionic', 'starter.controllers']);
 
-var settingsApp = junosApp.run(function($ionicPlatform) {
+var settingsApp = junosApp.run(function($ionicPlatform,$ionicPopup) {
   $ionicPlatform.ready(function() {
    
-    
+      showConfirm = function() {
+     var confirmPopup = $ionicPopup.confirm({
+       title: 'Log Out',
+       template: 'Are you sure you want to Log Out?'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         alert("yes");
+       } else {
+         alert("no");
+       }
+     });
+   };
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -141,4 +153,6 @@ var configApp = settingsApp.config(function($stateProvider, $urlRouterProvider) 
     $ionicConfigProvider.tabs.position('bottom'); // other values: top
 
 }]);
-//Github
+
+
+//ionic serve
