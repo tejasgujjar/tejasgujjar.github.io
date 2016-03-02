@@ -14,3 +14,7 @@
 	border-left: 1px solid #C8C8C8;
 }
 .wth45{width:45%;}
+.footer{
+	position: fixed;
+	bottom: 0px !important;
+}
