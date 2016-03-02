@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>JUNOS GENIUS</title>
+
+
+    <!-- compiled css output -->
+    <link href="css/ionic.app.css" rel="stylesheet">
+     <link href="css/style.css" rel="stylesheet">
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <!--  app's jquery lib -->
+    <script src="js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile-1.2.0.js"></script>
+    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+    <!-- Slider Javascript file -->
+    <script type="text/javascript" src="js/jssor.js"></script>
+    <script type="text/javascript" src="js/jssor.slider.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/test.js"></script>
+    <style>
+            /* jssor slider bullet navigator skin 18 css */
+            /*
+            .jssorb18 div           (normal)
+            .jssorb18 div:hover     (normal mouseover)
+            .jssorb18 .av           (active)
+            .jssorb18 .av:hover     (active mouseover)
+            .jssorb18 .dn           (mousedown)
+            */
+            .jssorb18 { position: absolute;
+             /*    bottom:35px !important;  */
+              
+            }
+            .jssorb18 div, .jssorb18 div:hover, .jssorb18 .av {
+                position: absolute;
+                /* size of bullet elment */
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                line-height: 20px;
+                font-size: 16px;                
+                overflow: hidden;
+                cursor: pointer;
+                border-radius:10px;       
+            }
+            .jssorb18 div { background-position: 10px; background-color:#c7c7c7;border-radius:10px;}
+            .jssorb18 div:hover, .jssorb18 .av:hover { background-position: -33px -3px; }
+            .jssorb18 .av { background-position: -63px -3px; }
+            .jssorb18 .dn, .jssorb18 .dn:hover { background-position: -93px -3px; }
+            .jssorb18 .n  { display: none; color: #000; }
+            .jssorb18 div:hover .n, .jssorb18 .av .n, .jssorb18 .av:hover .n, .jssorb18 .dn .n { display: block; 
+              background-color:#612d6f;color:#612d6f;border-radius:10px;text-shadow:none !important;}
+        </style> 
+</head>
+
+  <body ng-app="starter">
+    <ion-nav-view></ion-nav-view>
+
+    <ion-tabs class="tabs-positive tabs-icon-top">
+     <ion-tab title="Home" icon-on="ion-home" icon-off="ion-home" href="#/app/home">
+        <!-- Tab 1 content -->
+      </ion-tab>
+      <ion-tab title="Help" icon-on="ion-help" icon-off="ion-help" href="#/app/help">
+        <!-- Tab 1 content -->
+      </ion-tab>
+
+      <ion-tab title="Log Out" icon-on="ion-log-out" icon-off="ion-log-out" href="#/app/logout" >
+        <!-- Tab 2 content -->
+      </ion-tab>
+    </ion-tabs>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+/* Empty. Add your own CSS if you like */
+.mainKey-div{margin-top:10px;}
+.wth100{width:100%;}
+.display-inline{display: inline-block; vertical-align: middle;}
+.text-center{text-align: center;}
+.boxSize{box-sizing:border-box;}
+.borderTop{
+	border-top: 1px solid #C8C8C8;
+}
+.borderRight{
+	border-right: 1px solid #C8C8C8;
+}
+.borderLeft{
+	border-left: 1px solid #C8C8C8;
+}
+.wth45{width:45%;}
