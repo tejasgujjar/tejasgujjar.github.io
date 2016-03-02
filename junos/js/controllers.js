@@ -55,7 +55,20 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('homeCtrl', function($scope, $ionicTabsDelegate) {
+.controller('homeCtrl', function($scope, $ionicTabsDelegate, $ionicPopup) {
   $("#testId").val("testttttt"); 
- 
+  $scope.showConfirm = function() {
+     var confirmPopup = $ionicPopup.confirm({
+       title: 'Log Out',
+       template: 'Are you sure you want to Log Out?'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         alert("yes");
+       } else {
+         alert("no");
+       }
+     });
+   };
+
 });

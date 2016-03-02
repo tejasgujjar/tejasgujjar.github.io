@@ -18,3 +18,10 @@
 	position: fixed;
 	bottom: 0px !important;
 }
+.selectTab{
+	border: solid 2px black;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 7px;
+	background-color: #001f4d;
+}

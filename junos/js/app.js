@@ -141,3 +141,4 @@ var configApp = settingsApp.config(function($stateProvider, $urlRouterProvider) 
     $ionicConfigProvider.tabs.position('bottom'); // other values: top
 
 }]);
+//Github
