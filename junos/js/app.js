@@ -136,4 +136,8 @@ var configApp = settingsApp.config(function($stateProvider, $urlRouterProvider) 
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
-});
+}).config(['$ionicConfigProvider', function($ionicConfigProvider) {
+
+    $ionicConfigProvider.tabs.position('bottom'); // other values: top
+
+}]);
