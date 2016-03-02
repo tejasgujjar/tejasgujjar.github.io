@@ -1,0 +1,208 @@
+<html>
+	<script src="jquery.min.js"></script>
+	<script src="underscore-min.js"></script>
+	<script src="backbone-min.js"></script>
+	<script type="text/javascript">
+		var memArr = [];
+		var memberObj = function(name,amt){
+			this.name = name;
+			this.amt = amt;
+		}
+		
+		var members = ["tejas","kushal","yashas","karthik"]; //Input members name here
+		var membersAmt = [10,12,30,55];  //Input member's amount here
+
+		var totalAmt = function(membersAmt){
+			var tot =0;
+			for(var i=0;i<membersAmt.length;i++){
+				tot += membersAmt[i];
+			}
+			return tot;
+		}
+		var TotAmt = totalAmt(membersAmt);
+		var individual_share = TotAmt/membersAmt.length;
+		console.log("Individual Share : "+ individual_share);
+		
+		//Add member objects into array
+		for(var i=0;i<membersAmt.length;i++){
+			memArr.push(new memberObj(members[i],membersAmt[i]));
+		}
+
+		//Print initial amounts
+		for(var i=0;i<memArr.length;i++){
+			console.log("Member name:"+memArr[i].name + "\nMember amt: "+memArr[i].amt);
+		}
+		//Normalize the array
+		for(var i=0;i<memArr.length;i++){
+			memArr[i].amt = memArr[i].amt - individual_share;
+		}
+		//Print after normalizing
+		console.log("After Normalizing");
+		for(var i=0;i<memArr.length;i++){
+			//console.log("Member name:"+memArr[i].name + "\nMember amt: "+memArr[i].amt);
+		}
+
+		while(memArr.length > 0){
+			//sort array
+			memArr.sort(function(a, b){
+		 		return a.amt-b.amt
+			})
+
+			//Add first and last object
+			var res = memArr[0].amt + memArr[memArr.length - 1].amt;
+			if(res < 0){
+				
+				console.log("UPDATE: Member -"+memArr[0].name +"- should give -$"+memArr[memArr.length -1].amt+"- to member -"+memArr[memArr.length - 1].name+"-. ");
+				memArr[0].amt = res;
+				memArr.splice(memArr.length -1,1);
+			}
+			else if(res == 0){
+				console.log("UPDATE: Member -"+memArr[0].name +"- should give -$"+memArr[memArr.length -1].amt+"- to member -"+memArr[memArr.length - 1].name+"-. ");
+				memArr.splice(memArr.length - 1,1);	
+				memArr.splice(0,1);	
+			}
+			else{
+				console.log("UPDATE: Member -"+memArr[0].name +"- should give -$"+Math.abs(memArr[0].amt)+"- to member -"+memArr[memArr.length - 1].name+"-. ");
+				memArr[memArr.length -1].amt = res;
+				memArr.splice(0,1);	
+			}
+		}
+	
+	$(function(){
+		alert("sdf	");
+	// Create a model for the services
+	var Service = Backbone.Model.extend({
+
+		// Will contain three attributes.
+		// These are their default values
+
+		defaults:{
+			title: 'My service',
+			price: 100,
+			checked: false
+		},
+
+		// Helper function for checking/unchecking a service
+		toggle: function(){
+			this.set('checked', !this.get('checked'));
+		}
+	});
+
+	// Create a collection of services
+	var ServiceList = Backbone.Collection.extend({
+
+		// Will hold objects of the Service model
+		model: Service,
+
+		// Return an array only with the checked services
+		getChecked: function(){
+			return this.where({checked:true});
+		}
+	});
+
+	// Prefill the collection with a number of services.
+	var services = new ServiceList([
+		new Service({ title: 'web development', price: 200}),
+		new Service({ title: 'web design', price: 250}),
+		new Service({ title: 'photography', price: 100}),
+		new Service({ title: 'coffee drinking', price: 10})
+		// Add more here
+	]);
+
+	// This view turns a Service model into HTML. Will create LI elements.
+	var ServiceView = Backbone.View.extend({
+		tagName: 'li',
+
+		events:{
+			'click': 'toggleService'
+		},
+
+		initialize: function(){
+
+			// Set up event listeners. The change backbone event
+			// is raised when a property changes (like the checked field)
+
+			this.listenTo(this.model, 'change', this.render);
+		},
+
+		render: function(){
+
+			// Create the HTML
+
+			this.$el.html('<input type="checkbox" value="1" name="' + this.model.get('title') + '" /> ' + this.model.get('title') + '<span>$' + this.model.get('price') + '</span>');
+			this.$('input').prop('checked', this.model.get('checked'));
+
+			// Returning the object is a good practice
+			// that makes chaining possible
+			return this;
+		},
+
+		toggleService: function(){
+			this.model.toggle();
+		}
+	});
+
+	// The main view of the application
+	var App = Backbone.View.extend({
+
+		// Base the view on an existing element
+		el: $('#main'),
+
+		initialize: function(){
+
+			// Cache these selectors
+			this.total = $('#total span');
+			this.list = $('#services');
+
+			// Listen for the change event on the collection.
+			// This is equivalent to listening on every one of the 
+			// service objects in the collection.
+			this.listenTo(services, 'change', this.render);
+
+			// Create views for every one of the services in the
+			// collection and add them to the page
+
+			services.each(function(service){
+
+				var view = new ServiceView({ model: service });
+				this.list.append(view.render().el);
+
+			}, this);	// "this" is the context in the callback
+		},
+
+		render: function(){
+
+			// Calculate the total order amount by agregating
+			// the prices of only the checked elements
+
+			var total = 0;
+
+			_.each(services.getChecked(), function(elem){
+				total += elem.get('price');
+			});
+
+			// Update the total price
+			this.total.text('$'+total);
+
+			return this;
+		}
+	});
+
+	new App();
+
+});
+	</script>
+
+<body>
+	<h1>Welcome</h1>
+	<h2>Members</h2>
+
+			<ul id="services">
+				<!-- The services will be inserted here -->
+			</ul>
+
+			<p id="total">total: <span>$0</span></p>
+
+			<input type="button" id="order" value="Order" />
+</body>
+</html>
