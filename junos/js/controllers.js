@@ -71,7 +71,4 @@ angular.module('starter.controllers', [])
      });
    };
 
-   $scope.clicked = function(obj){
-      alert("lsd"+obj);
-   };
 });

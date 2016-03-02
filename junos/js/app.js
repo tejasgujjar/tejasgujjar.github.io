@@ -45,7 +45,7 @@ var configApp = settingsApp.config(function($stateProvider, $urlRouterProvider) 
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
+   
   .state('app.logout', {
     url: '/logout',
     views: {
